@@ -9,6 +9,6 @@ function archive() {
     const cRange = main.getRange("A3:AM");
     const pRange = main_archive.getRange("A3:AM");
     cRange.copyTo(pRange, {contentsOnly: true});
-    main_archive.getRange("C1").setValue(Utilities.formatDate(new Date(), 'JST', 'MM/dd HH:mm'))
+    main_archive.getRange("C1").setValue(Utilities.formatDate(new Date(), 'JST', 'MM/dd HH:mm'));
     return true;
 }
