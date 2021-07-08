@@ -15,8 +15,8 @@ function createNewDocument() {
 }
 
 function replaceDocument(array) {
-    const fileName          = String(array[0])
-    const parentFolder      = DriveApp.getFolderById(DriveApp.getFileById(ss.getId()).getParents().next().getId())
+    const fileName          = String(array[0]);
+    const parentFolder      = DriveApp.getFolderById(DriveApp.getFileById(ss.getId()).getParents().next().getId());
     const sourceDocument    = parentFolder.getFoldersByName('同意書テンプレート').next();
     const copyDir           = parentFolder.getFoldersByName('同意書').next();
     const duplicateDocument = sourceDocument.makeCopy(fileName, copyDir);
@@ -24,6 +24,6 @@ function replaceDocument(array) {
     const targetBody        = targetDocument.getBody();
     
     for (let i = 0; i <= 28; i++) {
-        targetBody.replaceText('c' + String(i) + 'c', array[i])
+        targetBody.replaceText('c' + String(i) + 'c', array[i]);
     }
 }
