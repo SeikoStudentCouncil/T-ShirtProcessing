@@ -1,0 +1,63 @@
+function all_print() {
+    const ss = SpreadsheetApp.getActiveSpreadsheet();
+    const intro = ss.getSheetByName('Intro.');
+    const trigger = intro.getRange("H19");
+    
+    if (trigger.getValue() == false) {
+        return false;
+    }
+    
+    const sheet = ss.getSheetByName('掲示印刷');
+    const ssID = ss.getId();
+    const shID = sheet.getSheetId();
+    const parentFolders = DriveApp.getFileById(ss.getId()).getParents();
+    const folder = DriveApp.getFolderById(parentFolders.next().getId()).getFoldersByName('pdf').next();
+    let baseUrl = "https://docs.google.com/spreadsheets/d/"
+        + ssID
+        + "/export?gid="
+        + shID;
+    let pdfOptions = "&exportFormat=pdf&format=pdf"
+        + "&size=A4"
+        + "&portrait=false"
+        + "&fitw=true"
+        + "&top_margin=0.1"
+        + "&bottom_margin=0.1"
+        + "&left_margin=0.1"
+        + "&right_margin=0.1"
+        + "&horizontal_alignment=LEFT"
+        + "&vertical_alignment=TOP"
+        + "&gridlines=false";
+    let url = baseUrl + pdfOptions;
+    const cartesian =
+        (...a) => a.reduce((a, b) => a.flatMap(d => b.map(e => [d, e].flat())));
+
+    let classes = cartesian(["J1", "J2", "J3", "S1", "S2"], ["A", "B", "C", "D", "E"]);
+
+    classes.push(["S2", "F"]);
+    
+    trigger.setValue(false);
+    
+    var iterList = folder.getFiles();
+    while (iterList.hasNext()) {
+        iterList.next().setTrashed(true);
+    }
+    for (let c of classes) {
+        let grd, cls;
+        [grd, cls] = c;
+        const v = grd + cls;
+        let token = ScriptApp.getOAuthToken();
+        let options = {
+          headers: {
+              'Authorization': 'Bearer ' +  token
+          },
+          muteHttpExceptions : true
+        };
+        sheet.getRange("B2").setValue(v);
+        SpreadsheetApp.flush();
+        let blob = UrlFetchApp.fetch(url, options).getBlob().setName(v + '.pdf');
+        folder.createFile(blob);
+        Utilities.sleep(6000);
+    }
+
+    return true;
+}
