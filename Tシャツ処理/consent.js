@@ -11,12 +11,13 @@ function deleteMenu() {
 }
 
 function createNewDocument() {
-    const spreadsheet    = SpreadsheetApp.getActiveSpreadsheet();
+    const ss             = SpreadsheetApp.getActiveSpreadsheet();
     const parentFolder   = DriveApp.getFolderById(DriveApp.getFileById(ss.getId()).getParents().next().getId());
     const copyDir        = parentFolder.getFoldersByName('同意書').next();
-    const sheet          = spreadsheet.getSheetByName('changes._同意差込');
+    const sheet          = ss.getSheetByName('changes._consent');
     const values         = sheet.getDataRange().getDisplayValues(); 
     const sourceDocument = parentFolder.getFilesByName('同意書テンプレート').next();
+    const changes        = ss.getSheetByName('changes.');
 
     var iterList = copyDir.getFiles();
     while (iterList.hasNext()) {
@@ -24,23 +25,23 @@ function createNewDocument() {
     }
 
     for (array of values.slice(2)) {
-        const fileName = String(array[0]);
+        const fileName = String(array[4]);
         const duplicateDocument = sourceDocument.makeCopy(fileName, copyDir);
         const ddId = duplicateDocument.getId();
         const targetDocument = DocumentApp.openById(ddId);
         const targetBody = targetDocument.getBody();
 
-        for (let i = 0; i <= 28; i++) {
-            targetBody.replaceText('c' + String(i) + 'c', array[i]);
+        for (let i = 2; i <= 29; i++) {
+            targetBody.replaceText('c' + String(i) + 'c', nvl(array[i + 2], ''));
         }
+        changes.getRange(parseInt(array[4]) + 2, 3).setValue("OK");
 
-        Utilities.sleep(6000);
         targetDocument.saveAndClose();
 
-        let token = ScirptApp.getOAuthToken();
+        let token = ScriptApp.getOAuthToken();
         let options = {
             headers: {
-                'Authorization': 'Bearer' + token
+                'Authorization': 'Bearer ' + token
             },
             muteHttpExceptions: true
         };
@@ -49,6 +50,12 @@ function createNewDocument() {
                 + "/export?&exportFormat=pdf&format=pdf";
         let blob = UrlFetchApp.fetch(url, options).getBlob().setName(fileName + '.pdf');
         copyDir.createFile(blob);
-        targetDocument.setTrashed(true);
+        Utilities.sleep(2000);
+        duplicateDocument.setTrashed(true);
     }
+}
+
+
+function nvl(val1, val2){
+    return (val1 == null) ? val2 : val1;
 }
