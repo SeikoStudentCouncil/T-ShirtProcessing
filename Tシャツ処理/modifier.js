@@ -31,20 +31,26 @@ function modifier() {
     let j = 0;
     let r = getDataLastRow(change) + 2;
     for (let i = 0; i < data1.length; i++) {
-        if (j < data2.length && !(data1Table.includes(parseInt(data2[j][3])))) {
+        Logger.log(data1[i][0])
+        Logger.log(data2[j][3])
+        if (j < data2.length && data2[j][3] != 'null' && !(data1Table.includes(parseInt(data2[j][3])))) {
             change.getRange(data2[j][0] + 2, 6, 1, 27).clearContent();
             change.getRange(data2[j][0] + 2, 8).setValue('null');
             j++;
-        } else if (j >= data2.length || data1[i][0] != data2[j][3]) {
+            Logger.log('case1')
+        } else if (j >= data2.length || data1[i][0] != data2[j][3] || data2[j][3] == 'null') {
             change.getRange(r, 8, 1, 25).setValues([data1[i]]);
             r++;
+            Logger.log('case2')
         } else if (JSON.stringify(data1[i]) != JSON.stringify(data2[j].slice(3))) {
             change.getRange(data2[j][0] + 2, 8, 1, 25).setValues([data1[i]]);
             req = change.getRange(data2[j][0] + 2, 4)
             req.setValue(String(req.getValue()) + ', modified')
             j++;
+            Logger.log('case3')
         } else {
             j++;
+            Logger.log('case4')
         }
     }
     return true;
