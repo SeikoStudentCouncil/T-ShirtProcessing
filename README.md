@@ -4,7 +4,7 @@
 
 35th Seiko Student Council discloses the programs and data used in t-shirts data processing by the Technology (Designers & Engineers) Department of the 62nd Seiko Festa Executive Committee and the Technology (Designers & Engineers) Bureau of the 36th Sports Festival Executive Committee in accordance with the provisions of Article 1 and Article 6 of the 62nd Seiko Festival Executive Committee’s Information Disclosure Regulations. However, some information will not be disclosed due to the provisions of Article 1, Item (3), (5) and (6) - and the relevant parts and reasons will be disclosed later in accordance with the provisions of Article 5.
 
-# setup
+## setup
 ```shell
 $ git config --local core.hooksPath .githooks
 $ chmod -R +x .githooks/
@@ -12,4 +12,5 @@ $ chmod -R +x .githooks/
 
 ## ver.
 **v0.1.0** (2021/7/8) 存在する資料を公開。準備段階なので適宜更新する。 / Disclose data that exist; this is a pre-release.
+
 **v1.0.0** (2021/7/30) コードを一部追加。則適用範囲外のデータ（体育祭実行委員会のもの）を削除し、ファイル構造を整理。 / Add Codes; Delete some of the data; Organize folders
