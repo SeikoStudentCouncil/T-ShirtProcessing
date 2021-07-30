@@ -18,7 +18,7 @@ function all_print() {
         + shID;
     let pdfOptions = "&exportFormat=pdf&format=pdf"
         + "&size=A4"
-        + "&portrait=false"
+        + '&portrait=false'
         + "&fitw=true"
         + "&top_margin=0.1"
         + "&bottom_margin=0.1"

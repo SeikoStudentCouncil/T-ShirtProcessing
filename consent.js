@@ -34,6 +34,7 @@ function createNewDocument() {
         for (let i = 2; i <= 29; i++) {
             targetBody.replaceText('c' + String(i) + 'c', nvl(array[i + 2], ''));
         }
+        Logger.log(parseInt(array[4]) + 2)
         changes.getRange(parseInt(array[4]) + 2, 3).setValue("OK");
 
         targetDocument.saveAndClose();
