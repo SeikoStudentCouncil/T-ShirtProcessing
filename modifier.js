@@ -39,11 +39,11 @@ function modifier() {
             req = change.getRange(data2[j][0] + 2, 4);
             rep = req.getValue();
             if (rep) {
-                req.setValue('modified: 1');
+                req.setValue('modified: 01');
             } else if (!/modified: \d$/.test(req)) {
-                req.setValue(rep + ('00' + parseInt(rep.slice(-2)) + 1).slice(-2));
+                req.setValue(rep.slice(0, -2) + ('00' + parseInt(rep.slice(-2)) + 1).slice(-2));
             } else {
-                req.setValue(String(rep) + ', modified: 1');
+                req.setValue(String(rep) + ', modified: 01');
             }
             i++;
             j++;
