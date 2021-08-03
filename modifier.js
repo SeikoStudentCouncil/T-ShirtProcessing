@@ -21,23 +21,34 @@ function modifier() {
         if (a[3] < b[3]) return -1;
         if (a[3] > b[3]) return 1;
     });
-
+    
+    let i = 0;
     let j = 0;
     let r = getDataLastRow(change) + 2;
-    for (let i = 0; i < data1.length; i++) {
+    while (i < data1.length) {
         if (j < data2.length && data2[j][3] != 'null' && !(data1Table.includes(parseInt(data2[j][3])))) {
             change.getRange(data2[j][0] + 2, 6, 1, 27).clearContent();
             change.getRange(data2[j][0] + 2, 8).setValue('null');
             j++;
         } else if (j >= data2.length || data1[i][0] != data2[j][3] || data2[j][3] == 'null') {
             change.getRange(r, 8, 1, 25).setValues([data1[i]]);
+            i++;
             r++;
         } else if (JSON.stringify(data1[i]) != JSON.stringify(data2[j].slice(3))) {
             change.getRange(data2[j][0] + 2, 8, 1, 25).setValues([data1[i]]);
-            req = change.getRange(data2[j][0] + 2, 4)
-            req.setValue(String(req.getValue()) + ', modified')
+            req = change.getRange(data2[j][0] + 2, 4);
+            rep = req.getValue();
+            if (rep) {
+                req.setValue('modified: 1');
+            } else if (!/modified: \d$/.test(req)) {
+                req.setValue(rep + ('00' + parseInt(rep.slice(-2)) + 1).slice(-2));
+            } else {
+                req.setValue(String(rep) + ', modified: 1');
+            }
+            i++;
             j++;
         } else {
+            i++;
             j++;
         }
     }
