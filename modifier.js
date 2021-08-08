@@ -29,10 +29,7 @@ function modifier() {
         if (j < data2.length && data2[j][3] != 'null' && !(data1Table.includes(parseInt(data2[j][3])))) {
             change.getRange(data2[j][0] + 2, 6, 1, 27).clearContent();
             change.getRange(data2[j][0] + 2, 8).setValue('null');
-<<<<<<< Updated upstream
-=======
             change.getRange(data2[j][0] + 2, 1, 1, 3).setValues([['OK', '-', '-']]);
->>>>>>> Stashed changes
             j++;
         } else if (j >= data2.length || data1[i][0] != data2[j][3] || data2[j][3] == 'null') {
             change.getRange(r, 8, 1, 25).setValues([data1[i]]);
