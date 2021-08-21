@@ -18,10 +18,11 @@ function modifier() {
     let data1Table = data1.map((element) => parseInt(element[0]));
 
     data2.sort((a, b) => {
+        if (b[3] == 'null') return -2;
         if (a[3] < b[3]) return -1;
-        if (a[3] > b[3]) return 1;
+        if (a[3] > b[3]) return 1;  
     });
-    
+
     let i = 0;
     let j = 0;
     let r = getDataLastRow(change) + 2;
@@ -35,13 +36,13 @@ function modifier() {
             change.getRange(r, 8, 1, 25).setValues([data1[i]]);
             i++;
             r++;
-        } else if (JSON.stringify(data1[i]) != JSON.stringify(data2[j].slice(3))) {
+        } else if (JSON.stringify(data1[i].slice(5)) != JSON.stringify(data2[j].slice(8))) {
             change.getRange(data2[j][0] + 2, 8, 1, 25).setValues([data1[i]]);
             req = change.getRange(data2[j][0] + 2, 4);
             rep = req.getValue();
             if (rep) {
                 req.setValue('modified: 01');
-            } else if (!/modified: \d$/.test(req)) {
+            } else if (!/modified: \d$/.test(rep)) {
                 req.setValue(rep.slice(0, -2) + ('00' + parseInt(rep.slice(-2)) + 1).slice(-2));
             } else {
                 req.setValue(String(rep) + ', modified: 01');
